@@ -88,6 +88,7 @@ static void avx2_fma_fp64_kernel(uint64_t loop){
 static void avx512_fma_fp32_kernel(uint64_t loop){
     asm volatile(
         "   movq        %0, %%rax               \n"
+#if 1
         "   vxorps      %%zmm0, %%zmm0, %%zmm0  \n"  // https://www.felixcloutier.com/x86/xorps
         "   vxorps      %%zmm1, %%zmm1, %%zmm1  \n"  // AVX512DQ?
         "   vxorps      %%zmm2, %%zmm2, %%zmm2  \n"
@@ -98,6 +99,7 @@ static void avx512_fma_fp32_kernel(uint64_t loop){
         "   vxorps      %%zmm7, %%zmm7, %%zmm7  \n"
         "   vxorps      %%zmm8, %%zmm8, %%zmm8  \n"
         "   vxorps      %%zmm9, %%zmm9, %%zmm9  \n"
+#endif
         "0:                                     \n"
         "   vfmadd231ps %%zmm0, %%zmm0, %%zmm0  \n"
         "   vfmadd231ps %%zmm1, %%zmm1, %%zmm1  \n"
@@ -186,18 +188,18 @@ int main(){
     if(cpuid_support_avx2()){
         bench_result_t r_avx2_fma;
         r_avx2_fma = bench_fma(LOOP, avx2_fma_fp32_kernel, AVX2_FMA_FP32_FLOP);
-        printf("avx2 fma fp32 gflops:%.2f\n", r_avx2_fma.gflops);
+        printf("avx256 fma fp32, %4.2f gflops\n", r_avx2_fma.gflops);
 
         r_avx2_fma = bench_fma(LOOP, avx2_fma_fp64_kernel, AVX2_FMA_FP64_FLOP);
-        printf("avx2 fma fp64 gflops:%.2f\n", r_avx2_fma.gflops);
+        printf("avx256 fma fp64, %4.2f gflops\n", r_avx2_fma.gflops);
     }
 
     if(cpuid_support_avx512_f()){
         bench_result_t r_avx512_fma;
         r_avx512_fma = bench_fma(LOOP, avx512_fma_fp32_kernel, AVX512_FMA_FP32_FLOP);
-        printf("avx512 fma fp32 gflops:%.2f\n", r_avx512_fma.gflops);
+        printf("avx512 fma fp32, %4.2f gflops\n", r_avx512_fma.gflops);
 
         r_avx512_fma = bench_fma(LOOP, avx512_fma_fp64_kernel, AVX512_FMA_FP64_FLOP);
-        printf("avx512 fma fp64 gflops:%.2f\n", r_avx512_fma.gflops);
+        printf("avx512 fma fp64, %4.2f gflops\n", r_avx512_fma.gflops);
     }
 }
