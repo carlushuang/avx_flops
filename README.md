@@ -13,6 +13,6 @@ maybe set the userspace governor:
 ```
 echo userspace > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 echo [freq] > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed
-# not in some intel system with Intel Turbo Boost, the max freq may still have turbo effect.
-# can set to the second largest freq
+# note in some intel system with Intel Turbo Boost, the max freq may still have turbo effect.
+# hence may need set to the second largest freq
 ```

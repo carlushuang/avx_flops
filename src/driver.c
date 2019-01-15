@@ -88,8 +88,8 @@ static void avx2_fma_fp64_kernel(uint64_t loop){
 static void avx512_fma_fp32_kernel(uint64_t loop){
     asm volatile(
         "   movq        %0, %%rax               \n"
-        "   vxorps      %%zmm0, %%zmm0, %%zmm0  \n"
-        "   vxorps      %%zmm1, %%zmm1, %%zmm1  \n"
+        "   vxorps      %%zmm0, %%zmm0, %%zmm0  \n"  // https://www.felixcloutier.com/x86/xorps
+        "   vxorps      %%zmm1, %%zmm1, %%zmm1  \n"  // AVX512DQ?
         "   vxorps      %%zmm2, %%zmm2, %%zmm2  \n"
         "   vxorps      %%zmm3, %%zmm3, %%zmm3  \n"
         "   vxorps      %%zmm4, %%zmm4, %%zmm4  \n"
